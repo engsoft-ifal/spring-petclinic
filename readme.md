@@ -2,5 +2,4 @@
 
 ## Através da aplicação Spring PetClinic veremos conceitos importantes e atuais de processos de software.
 
-<br>
-[Veja o arquivo README_orgi.md para instruções de instalação](./README_orig.md)
+Veja o arquivo [README_orig.md](./README_orig.md) para instruções de instalação
