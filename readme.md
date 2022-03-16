@@ -1,3 +1,9 @@
+# **Projeto modelo da discplina de Processos de Desenvolvimento de Software 2021.2 do curso de Sistemas de Informação**
+
+## Através da aplicação Spring PetClinic veremos conceitos importantes e atuais de processos de software.
+
+<br><br>
+
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 
 ## Understanding the Spring Petclinic application with a few diagrams
