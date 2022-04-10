@@ -19,10 +19,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -56,5 +58,9 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
 
 	;
+
+	@Query("SELECT specialty FROM Specialty specialty")
+	@Transactional(readOnly = true)
+	List<Specialty> findVetSpecialties();
 
 }
