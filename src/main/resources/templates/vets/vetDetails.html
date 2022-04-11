@@ -28,14 +28,35 @@
   
       <tr th:each="specialty : ${vet.specialties}">
         <td valign="top">
-          <dl class="dl-horizontal">
+          <dl style="margin: 5px 5px;" class="dl-horizontal">
             <!-- <dt>Name</dt> -->
-            <dd th:text="${specialty.name}"></dd>
+            <div class="row">
+              <div class="col-md-6" style="display:flex; align-items:center;">
+                <dd style="margin: 0" th:text="${specialty.name}"></dd>
+              </div>
+              <div class="col-md-6" style="display:flex; flex-direction: row-reverse;">
+                <form>
+                  <button th:onclick="|removeSpec(${vet.id}, ${specialty.id})|" th:id="${'spec-' + specialty.id}" style="margin-right: 15px;">remover</button>
+                </form>
+              </div>
+            </div>
           </dl>
       </tr>
   
     </table>
-  
+  <script>
+    function removeSpec(vetId, specId){
+      console.log(vetId)
+      console.log(specId)
+      if(confirm(`Deseja mesmo remover essa especialidade?`)){
+        const url = `/vets/${vetId}/specialty/${specId}/delete`
+        console.log(url)
+        fetch(url, {method: "POST"})
+        .then(()=>{})
+      }
+    }
+  </script>
+
   </body>
 
 </html>
