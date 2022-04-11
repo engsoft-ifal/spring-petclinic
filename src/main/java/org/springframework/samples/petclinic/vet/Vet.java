@@ -76,4 +76,7 @@ public class Vet extends Person {
 		getSpecialtiesInternal().add(specialty);
 	}
 
+	public void removeSpecialty(Specialty specialty) {
+		this.specialties.removeIf(spec -> spec.getId().equals(specialty.getId()));
+	}
 }
