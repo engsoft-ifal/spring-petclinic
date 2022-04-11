@@ -79,10 +79,8 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	Vet findById(@Param("id") Integer id);
 
-	// @Query(value = "SELECT * FROM vets as v, specialties as s, vet_specialties as vs
-	// WHERE v.id = vs.vet_id AND s.id = vs.specialty_id AND vs.vet_id = 3",
-	// nativeQuery = true)
-	// @Transactional(readOnly = true)
-	// List<Specialty> findSpecialtiesByVetId(@Param("vetid") Integer id);
+	@Query("SELECT spec FROM Specialty spec WHERE spec.name =:name")
+	@Transactional(readOnly = true)
+	Specialty findSpecialtyByName(@Param("name") String name);
 
 }
