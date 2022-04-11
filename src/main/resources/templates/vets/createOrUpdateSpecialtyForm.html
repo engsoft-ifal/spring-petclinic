@@ -1,0 +1,61 @@
+<!-- <html xmlns:th="https://www.thymeleaf.org"
+ th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+
+<body>
+
+ <h2>Add new Specialty to Vet</h2>
+ <form th:action="@{/vets/{vetId}/specialty/new}" th:object="${specialtyForm}" class="form-horizontal" method="post">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Vet Name: </label>
+        <div class="col-sm-10" style="margin-bottom: 15px;">
+          <strong><span th:text="${vet?.firstName + ' ' + vet?.lastName}" /></strong>
+        </div>
+      </div>
+      <input type="hidden"
+        th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
+      <input type="hidden"
+        th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" />
+      <input
+        th:replace="~{fragments/selectField :: select ('Choose a specialty', 'specialties', ${specialties})}" />
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        <button
+            th:with="text=${vet['new']} ? 'Add Vet' : 'Update Vet'"
+            class="btn btn-primary" type="submit" th:text="${text}">Add
+            Vet</button>
+        </div>
+    </div>
+ </form>
+</body>
+</html> -->
+
+<!-- #JavaInspires -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Java Inspires</title>
+</head>
+<body>
+	<div align="center">
+		<br>
+		<h1>Employee Form</h1>
+		<br>
+		<form th:object="${specialtyForm}" method="POST">
+			<table>
+				<tr>
+					<td>Emp Designation</td>
+					<td><select name="designation">
+                        <option th:each="teste : ${specialties}"
+                            th:text="${teste}">
+					</select></td>
+				</tr>
+			</table>
+			<input type="submit" value="Save" />
+		</form>
+	</div>
+</body>
+</html>

@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
@@ -62,5 +63,26 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Query("SELECT specialty FROM Specialty specialty")
 	@Transactional(readOnly = true)
 	List<Specialty> findVetSpecialties();
+
+	/**
+	 * Save an {@link Vet} to the data store, either inserting or updating it.
+	 * @param vet the {@link Vet} to save
+	 */
+	void save(Vet vet);
+
+	/**
+	 * Retrieve an {@link Vet} from the data store by id.
+	 * @param id the id to search for
+	 * @return the {@link Vet} if found
+	 */
+	@Query("SELECT vet FROM Vet vet WHERE vet.id =:id")
+	@Transactional(readOnly = true)
+	Vet findById(@Param("id") Integer id);
+
+	// @Query(value = "SELECT * FROM vets as v, specialties as s, vet_specialties as vs
+	// WHERE v.id = vs.vet_id AND s.id = vs.specialty_id AND vs.vet_id = 3",
+	// nativeQuery = true)
+	// @Transactional(readOnly = true)
+	// List<Specialty> findSpecialtiesByVetId(@Param("vetid") Integer id);
 
 }

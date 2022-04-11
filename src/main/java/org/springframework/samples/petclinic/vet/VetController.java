@@ -18,16 +18,23 @@ package org.springframework.samples.petclinic.vet;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Juergen Hoeller
@@ -41,6 +48,8 @@ class VetController {
 	private final VetRepository vets;
 
 	private static final String VIEWS_VET_CREATE_OR_UPDATE_FORM = "vets/createOrUpdateVetForm";
+
+	private static final String VIEWS_ADD_SPECIALTY = "vets/createOrUpdateSpecialtyForm";
 
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
@@ -62,6 +71,18 @@ class VetController {
 		Vet vet = new Vet();
 		model.put("vet", vet);
 		return VIEWS_VET_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping("/vets/new")
+	public String processCreationForm(@Valid Vet vet, BindingResult result) {
+		if (result.hasErrors()) {
+			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			System.out.println(vet.toString());
+			this.vets.save(vet);
+			return "redirect:/vets/" + vet.getId();
+		}
 	}
 
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
@@ -93,4 +114,38 @@ class VetController {
 		return this.vets.findVetSpecialties();
 	}
 
+	@GetMapping("/vets/{vetId}")
+	public ModelAndView showVet(@PathVariable("vetId") int vetId) {
+		ModelAndView mav = new ModelAndView("vets/vetDetails");
+		Vet vet = this.vets.findById(vetId);
+		mav.addObject(vet);
+		return mav;
+	}
+
+	// @GetMapping("/vets/{vetId}/specialty/new")
+	// public String initCreationSpecialtyForm(Map<String, Object> model, @PathVariable("vetId") int vetId) {
+	// 	Vet vet = this.vets.findById(vetId);
+	// 	model.
+	// 	return VIEWS_ADD_SPECIALTY;
+	// }
+
+	@GetMapping("/vets/{vetId}/specialty/new")
+	private String getEmployeeForm(Model model) {
+		model.addAttribute("specialties");
+		return VIEWS_ADD_SPECIALTY;
+	}
+
+	@PostMapping("/vets/{vetId}/specialty/new")
+	private String submitSpecialty(@ModelAttribute("specialtyForm") SpecialtyForm specialtyForm, Model model) {
+		//NOT WORKING
+		System.out.println(model.getAttribute("specialtyForm"));
+		return "redirect:/vets.html";
+	}
+
+	// @PostMapping("/vets/{vetId}/specialty/new")
+	// public String processCreationForm(Vet vet, @Valid Specialty specialty, BindingResult result, ModelMap model, @PathVariable("vetId") int vetId) {
+	// 	//Vet vetVerify = this.vets.findById(vetId);
+	// 	System.out.println(specialty.getName());
+	// 	return "redirect:/vets.html";
+	// }
 }
