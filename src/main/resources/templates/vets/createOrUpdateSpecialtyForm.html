@@ -5,20 +5,10 @@
 
  <h2>Add new Specialty to Vet</h2>
  <form th:object="${specialtyForm}" class="form-horizontal" method="post">
-    <!-- <input type="hidden" name="id" th:value="*{id}" /> -->
     <div class="form-group has-feedback">
       <div class="form-group">
         <label class="col-sm-2 control-label">Vet Name: </label>
-        <!-- <div class="col-sm-10" style="margin-bottom: 15px;">
-          <strong><span th:text="${vet?.firstName + ' ' + vet?.lastName}" /></strong>
-        </div> -->
       </div>
-      <!-- <input
-        th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" /> -->
-      <!-- <input
-        th:replace="~{fragments/selectField :: select ('Choose a specialty', 'specialties', ${specialties})}" /> -->
       <select name="specialty">
         <option th:each="specialty : ${specialties}"
             th:text="${specialty}">
@@ -32,31 +22,3 @@
  </form>
 </body>
 </html>
-
-<!-- #JavaInspires
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Java Inspires</title>
-</head>
-<body>
-	<div align="center">
-		<br>
-		<h1>Employee Form</h1>
-		<br>
-		<form th:action="@{/vets/10/specialty/new}" th:object="${specialtyForm}" method="POST">
-			<table>
-				<tr>
-					<td>Emp Designation</td>
-					<td><select name="specialty">
-                        <option th:each="specialty : ${specialties}"
-                            th:text="${specialty}">
-					</select></td>
-				</tr>
-			</table>
-			<input type="submit" value="Save" />
-		</form>
-	</div>
-</body>
-</html> -->
