@@ -83,4 +83,8 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	Specialty findSpecialtyByName(@Param("name") String name);
 
+	@Query("SELECT spec FROM Specialty spec WHERE spec.id =:id")
+	@Transactional(readOnly = true)
+	Specialty findSpecialtyById(@Param("id") Integer id);
+
 }
