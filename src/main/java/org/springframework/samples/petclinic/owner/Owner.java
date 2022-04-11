@@ -56,8 +56,11 @@ public class Owner extends Person {
 
 	@Column(name = "telephone")
 	@NotEmpty
-	@Digits(fraction = 0, integer = 10)
 	private String telephone;
+
+	@Column(name = "telephone_two")
+	@NotEmpty
+	private String telephoneTwo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
@@ -86,6 +89,14 @@ public class Owner extends Person {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+
+	public String getTelephoneTwo() {
+		return this.telephoneTwo;
+	}
+
+	public void setTelephoneTwo(String telephone) {
+		this.telephoneTwo = telephone;
 	}
 
 	public List<Pet> getPets() {
@@ -148,7 +159,7 @@ public class Owner extends Person {
 		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
 				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
 				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
-				.toString();
+				.append("telephoneTwo", this.telephoneTwo).toString();
 	}
 
 	/**
