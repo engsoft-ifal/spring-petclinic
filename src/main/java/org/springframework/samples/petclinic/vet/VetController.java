@@ -122,30 +122,16 @@ class VetController {
 		return mav;
 	}
 
-	// @GetMapping("/vets/{vetId}/specialty/new")
-	// public String initCreationSpecialtyForm(Map<String, Object> model, @PathVariable("vetId") int vetId) {
-	// 	Vet vet = this.vets.findById(vetId);
-	// 	model.
-	// 	return VIEWS_ADD_SPECIALTY;
-	// }
-
 	@GetMapping("/vets/{vetId}/specialty/new")
 	private String getEmployeeForm(Model model) {
 		model.addAttribute("specialties");
 		return VIEWS_ADD_SPECIALTY;
 	}
 
-	@PostMapping("/vets/{vetId}/specialty/new")
+	@PostMapping(path = "/vets/{vetId}/specialty/new")
 	private String submitSpecialty(@ModelAttribute("specialtyForm") SpecialtyForm specialtyForm, Model model) {
-		//NOT WORKING
-		System.out.println(model.getAttribute("specialtyForm"));
+		System.out.println(specialtyForm);
 		return "redirect:/vets.html";
 	}
 
-	// @PostMapping("/vets/{vetId}/specialty/new")
-	// public String processCreationForm(Vet vet, @Valid Specialty specialty, BindingResult result, ModelMap model, @PathVariable("vetId") int vetId) {
-	// 	//Vet vetVerify = this.vets.findById(vetId);
-	// 	System.out.println(specialty.getName());
-	// 	return "redirect:/vets.html";
-	// }
 }

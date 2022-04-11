@@ -2,28 +2,28 @@ package org.springframework.samples.petclinic.vet;
 
 public class SpecialtyForm {
 
-	private Specialty specialty;
+	private String specialty;
 
 	public SpecialtyForm() {
 		super();
 	}
 
-	public SpecialtyForm(Specialty spec) {
+	public SpecialtyForm(String spec) {
 		super();
 		specialty = spec;
 	}
 
-	public Specialty getSpecialty() {
-		return specialty;
+	public String getSpecialty() {
+		return this.specialty;
 	}
 
-	public void setSpeciality(Specialty spec) {
+	public void setSpecialty(String spec) {
 		this.specialty = spec;
 	}
 
 	@Override
 	public String toString() {
-		return "EmployeeForm [id=" + specialty.getId().toString() + ", name=" + specialty.getName() + "]";
+		return "SpecialtyForm [specialty=" + this.specialty + "]";
 	}
 
 }
