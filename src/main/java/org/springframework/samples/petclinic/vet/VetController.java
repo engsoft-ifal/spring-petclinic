@@ -120,7 +120,7 @@ class VetController {
 	}
 
 	@GetMapping("/vets/{vetId}/specialty/new")
-	private String getEmployeeForm(Model model) {
+	private String getSpecialtyForm(Model model) {
 		model.addAttribute("specialties");
 		return VIEWS_ADD_SPECIALTY;
 	}
@@ -135,4 +135,36 @@ class VetController {
 		return "redirect:/vets/" + vet.getId();
 	}
 
+	@GetMapping("/vets/{vetId}/edit")
+	public ModelAndView editVet(@PathVariable("vetId") int vetId) {
+		Vet vet = this.vets.findById(vetId);
+		ModelAndView mav = new ModelAndView(VIEWS_VET_CREATE_OR_UPDATE_FORM);
+		mav.addObject(vet);
+		return mav;
+	}
+
+	@PostMapping("/vets/{vetId}/edit")
+	public String processEditionForm(@Valid Vet updatedVet, BindingResult result, @PathVariable("vetId") int vetId) {
+		if (result.hasErrors()) {
+			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Vet vet = this.vets.findById(vetId);
+			if(!vet.getFirstName().equals(updatedVet.getFirstName()) || !vet.getLastName().equals(updatedVet.getLastName()) ){
+				vet.setFirstName(updatedVet.getFirstName());
+				vet.setLastName(updatedVet.getLastName());
+				this.vets.save(vet);
+			}
+			return "redirect:/vets/" + vet.getId();
+		}
+	}
+
+	@PostMapping("/vets/{vetId}/specialty/{specId}/delete")
+	public String processEditionForm(@PathVariable("vetId") int vetId, @PathVariable("specId") int specId) {
+		Vet vet = this.vets.findById(vetId);
+		Specialty spec = this.vets.findSpecialtyById(specId);
+		vet.removeSpecialty(spec);
+		this.vets.save(vet);
+		return "redirect:/vets/" + vet.getId();
+	}
 }
