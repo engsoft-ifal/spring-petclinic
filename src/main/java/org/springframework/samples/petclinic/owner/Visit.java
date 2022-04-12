@@ -25,6 +25,8 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
+import org.springframework.core.style.ToStringCreator;
+
 /**
  * Simple JavaBean domain object representing a visit.
  *
@@ -63,6 +65,12 @@ public class Visit extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringCreator(this).append("date", this.date).append("description", this.description)
+				.append("visitTest", "").append("new", this.isNew()).toString();
 	}
 
 }
