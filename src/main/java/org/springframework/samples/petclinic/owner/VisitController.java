@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -39,6 +42,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 class VisitController {
 
 	private final OwnerRepository owners;
+
+	private final VisitRepository visits;
 
 	public VisitController(OwnerRepository owners) {
 		this.owners = owners;
@@ -88,6 +93,21 @@ class VisitController {
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
+	}
+
+	@PutMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit")
+	public String editVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
+			BindingResult result) {
+		return "Put request para" + petId;
+	}
+
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/edit")
+	public ModelAndView initEditVisitForm(@PathVariable("visitId") int visitId) {
+		ModelAndView mav = new ModelAndView("pets/createOrUpdateVisitForm");
+		Visit visit = this.visits.findById(visitId);
+		mav.addObject(visit);
+
+		return mav;
 	}
 
 }
