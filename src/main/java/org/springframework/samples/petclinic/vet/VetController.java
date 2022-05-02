@@ -150,7 +150,8 @@ class VetController {
 		}
 		else {
 			Vet vet = this.vets.findById(vetId);
-			if(!vet.getFirstName().equals(updatedVet.getFirstName()) || !vet.getLastName().equals(updatedVet.getLastName()) ){
+			if (!vet.getFirstName().equals(updatedVet.getFirstName())
+					|| !vet.getLastName().equals(updatedVet.getLastName())) {
 				vet.setFirstName(updatedVet.getFirstName());
 				vet.setLastName(updatedVet.getLastName());
 				this.vets.save(vet);
@@ -167,4 +168,5 @@ class VetController {
 		this.vets.save(vet);
 		return "redirect:/vets/" + vet.getId();
 	}
+
 }
