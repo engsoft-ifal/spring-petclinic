@@ -45,8 +45,9 @@ class VisitController {
 
 	private final VisitRepository visits;
 
-	public VisitController(OwnerRepository owners) {
-		this.owners = owners;
+	public VisitController(OwnerRepository _owners, VisitRepository _visits) {
+		this.owners = _owners;
+		this.visits = _visits;
 	}
 
 	@InitBinder

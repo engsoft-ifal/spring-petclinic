@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface VisitRepository extends Repository<Visit, Integer> {
 
-	@Query("SELECT * as visit FROM Visit WHERE visit.id =:id")
+	@Query("SELECT visit FROM Visit visit WHERE visit.id =:id")
 	@Transactional(readOnly = true)
 	Visit findById(@Param("id") Integer id);
 
