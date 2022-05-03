@@ -43,11 +43,11 @@ class VisitController {
 
 	private final OwnerRepository owners;
 
-	// private final VisitRepository visits;
+	private final VisitRepository visits;
 
-	public VisitController(OwnerRepository _owners) {
+	public VisitController(OwnerRepository _owners, VisitRepository _visits) {
 		this.owners = _owners;
-		// this.visits = _visits;
+		this.visits = _visits;
 	}
 
 	@InitBinder
@@ -102,13 +102,13 @@ class VisitController {
 		return "Put request para" + petId;
 	}
 
-	// @GetMapping("/owners/{ownerId}/pets/{petId}/visits/edit")
-	// public ModelAndView initEditVisitForm(@PathVariable("visitId") int visitId) {
-	// ModelAndView mav = new ModelAndView("pets/createOrUpdateVisitForm");
-	// Visit visit = this.visits.findById(visitId);
-	// mav.addObject(visit);
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/edit")
+	public ModelAndView initEditVisitForm(@PathVariable("visitId") int visitId) {
+		ModelAndView mav = new ModelAndView("pets/createOrUpdateVisitForm");
+		Visit visit = this.visits.findById(visitId);
+		mav.addObject(visit);
 
-	// return mav;
-	// }
+		return mav;
+	}
 
 }
