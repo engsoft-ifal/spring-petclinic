@@ -28,6 +28,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
@@ -55,12 +57,20 @@ public class Owner extends Person {
 	private String city;
 
 	@Column(name = "telephone")
+	@Pattern(regexp = "(^$|[0-9]{11})", message = "O Telefone deve conter apenas números")
 	@NotEmpty
 	private String telephone;
 
 	@Column(name = "telephone_two")
+	@Pattern(regexp = "(^$|[0-9]{11})", message = "O Telefone deve conter apenas números")
 	@NotEmpty
 	private String telephoneTwo;
+
+	@Column(name = "email", unique = true)
+	@Email(message = "O Email não é valido",
+			regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
+	@NotEmpty
+	private String email;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
@@ -97,6 +107,14 @@ public class Owner extends Person {
 
 	public void setTelephoneTwo(String telephone) {
 		this.telephoneTwo = telephone;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public List<Pet> getPets() {

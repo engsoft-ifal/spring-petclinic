@@ -13,6 +13,7 @@
     <th style="width: 150px;">Address</th>
     <th style="width: 100px">City</th>
     <th >Telephone</th>
+    <th >E-mail</th>
     <th>Pets</th>
   </tr>
   </thead>
@@ -24,6 +25,7 @@
     <td th:text="${owner.address}"/>
     <td th:text="${owner.city}"/>
     <td th:text="${owner.telephone + ', ' + owner.telephoneTwo}"/>
+    <td th:text="${owner.email}"/>
     <td><span th:text="${#strings.listJoin(owner.pets, ', ')}"/></td>
   </tr>
   </tbody>
