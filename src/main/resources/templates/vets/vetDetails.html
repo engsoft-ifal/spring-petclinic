@@ -18,6 +18,7 @@
   
     <a th:href="@{{id}/edit(id=${vet.id})}" class="btn btn-primary">Edit</a>
     <a th:href="@{{id}/specialty/new(id=${vet.id})}" class="btn btn-primary">Add New Specialty</a>
+    <a th:href="@{{id}/available-day/new(id=${vet.id})}" class="btn btn-primary">Add New Available Appointment Day</a>
   
     <br />
     <br />
@@ -44,15 +45,46 @@
       </tr>
   
     </table>
+
+    <br />
+    <br />
+    <br />
+    <h2>Available Days</h2>
+
+    <table class="table table-striped">
+  
+      <tr th:each="day : ${vet.days}">
+        <td valign="top">
+          <dl style="margin: 5px 5px;" class="dl-horizontal">
+            <!-- <dt>Name</dt> -->
+            <div class="row">
+              <div class="col-md-6" style="display:flex; align-items:center;">
+                <dd style="margin: 0" th:text="${day.name}"></dd>
+              </div>
+              <div class="col-md-6" style="display:flex; flex-direction: row-reverse;">
+                <form>
+                  <button th:onclick="|removeDay(${vet.id}, ${day.id})|" th:id="${'day-' + day.id}" style="margin-right: 15px;">remover</button>
+                </form>
+              </div>
+            </div>
+          </dl>
+      </tr>
+  
+    </table>
   <script>
     function removeSpec(vetId, specId){
-      console.log(vetId)
-      console.log(specId)
       if(confirm(`Deseja mesmo remover essa especialidade?`)){
         const url = `/vets/${vetId}/specialty/${specId}/delete`
-        console.log(url)
         fetch(url, {method: "POST"})
-        .then(()=>{})
+        .then(()=>location.reload())
+      }
+    }
+
+    function removeDay(vetId, dayId){
+      if(confirm(`Deseja mesmo remover essa dia?`)){
+        const url = `/vets/${vetId}/available-day/${dayId}/delete`
+        fetch(url, {method: "POST"})
+        .then(() => location.reload())
       }
     }
   </script>

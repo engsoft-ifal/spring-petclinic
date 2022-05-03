@@ -64,6 +64,10 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	List<Specialty> findVetSpecialties();
 
+	@Query("SELECT day FROM Day day")
+	@Transactional(readOnly = true)
+	List<Day> findVetAvailableDays();
+
 	/**
 	 * Save an {@link Vet} to the data store, either inserting or updating it.
 	 * @param vet the {@link Vet} to save
@@ -86,5 +90,13 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Query("SELECT spec FROM Specialty spec WHERE spec.id =:id")
 	@Transactional(readOnly = true)
 	Specialty findSpecialtyById(@Param("id") Integer id);
+
+	@Query("SELECT day FROM Day day WHERE day.name =:name")
+	@Transactional(readOnly = true)
+	Day findDayByName(@Param("name") String name);
+
+	@Query("SELECT day FROM Day day WHERE day.id =:id")
+	@Transactional(readOnly = true)
+	Day findDayById(@Param("id") Integer id);
 
 }

@@ -27,6 +27,18 @@ CREATE TABLE vet_specialties (
 ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_vets FOREIGN KEY (vet_id) REFERENCES vets (id);
 ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_specialties FOREIGN KEY (specialty_id) REFERENCES specialties (id);
 
+CREATE TABLE available_days (
+  id   INTEGER IDENTITY PRIMARY KEY,
+  name VARCHAR(80)
+);
+
+CREATE TABLE vet_days (
+  vet_id INTEGER NOT NULL,
+  day_id INTEGER NOT NULL
+);
+ALTER TABLE vet_days ADD CONSTRAINT fk_vet_days_vets FOREIGN KEY (vet_id) REFERENCES vets (id);
+ALTER TABLE vet_days ADD CONSTRAINT fk_vet_days_days FOREIGN KEY (day_id) REFERENCES available_days (id);
+
 CREATE TABLE types (
   id   INTEGER IDENTITY PRIMARY KEY,
   name VARCHAR(80)
@@ -59,7 +71,9 @@ CREATE TABLE visits (
   id          INTEGER IDENTITY PRIMARY KEY,
   pet_id      INTEGER,
   visit_date  DATE,
-  description VARCHAR(255)
+  description VARCHAR(255),
+  vet_id      INTEGER
 );
 ALTER TABLE visits ADD CONSTRAINT fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
+ALTER TABLE visits ADD CONSTRAINT fk_visits_vet FOREIGN KEY (vet_id) REFERENCES vets (id);
 CREATE INDEX visits_pet_id ON visits (pet_id);
