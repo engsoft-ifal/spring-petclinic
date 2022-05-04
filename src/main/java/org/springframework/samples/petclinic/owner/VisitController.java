@@ -77,9 +77,15 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
 	// called
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+	public String firstStepNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
 		return "pets/createOrUpdateVisitForm";
 	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new/2")
+	public String secondStepNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+		return "pets/createOrUpdateVisitForm";
+	}
+
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
