@@ -1,0 +1,24 @@
+<html xmlns:th="https://www.thymeleaf.org"
+ th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+
+<body>
+
+ <h2>Add New Available Appointment Day</h2>
+ <form th:object="${dayForm}" class="form-horizontal" method="post">
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Vet Name: </label>
+      </div>
+      <select name="day">
+        <option th:each="day : ${days}"
+            th:text="${day}">
+      </select>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-primary" type="submit">Add Available Day</button>
+        </div>
+    </div>
+ </form>
+</body>
+</html>

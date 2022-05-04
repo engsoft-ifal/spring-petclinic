@@ -49,6 +49,8 @@ class VetController {
 
 	private static final String VIEWS_ADD_SPECIALTY = "vets/createOrUpdateSpecialtyForm";
 
+	private static final String VIEWS_ADD_AVAILABLE_DAY = "vets/createOrUpdateAvailableDayForm";
+
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 	}
@@ -111,6 +113,11 @@ class VetController {
 		return this.vets.findVetSpecialties();
 	}
 
+	@ModelAttribute("days")
+	public Collection<Day> populateVetDays() {
+		return this.vets.findVetAvailableDays();
+	}
+
 	@GetMapping("/vets/{vetId}")
 	public ModelAndView showVet(@PathVariable("vetId") int vetId) {
 		ModelAndView mav = new ModelAndView("vets/vetDetails");
@@ -134,6 +141,24 @@ class VetController {
 		this.vets.save(vet);
 		return "redirect:/vets/" + vet.getId();
 	}
+
+	// new
+	@GetMapping("/vets/{vetId}/available-day/new")
+	private String getDayForm(Model model) {
+		model.addAttribute("days");
+		return VIEWS_ADD_AVAILABLE_DAY;
+	}
+
+	@PostMapping(path = "/vets/{vetId}/available-day/new")
+	private String submitDay(@ModelAttribute("DayForm") DayForm dayForm, Model model,
+			@PathVariable("vetId") int vetId) {
+		Vet vet = this.vets.findById(vetId);
+		Day day = this.vets.findDayByName(dayForm.getDay());
+		vet.addDays(day);
+		this.vets.save(vet);
+		return "redirect:/vets/" + vet.getId();
+	}
+	// endnew
 
 	@GetMapping("/vets/{vetId}/edit")
 	public ModelAndView editVet(@PathVariable("vetId") int vetId) {
@@ -166,7 +191,16 @@ class VetController {
 		Specialty spec = this.vets.findSpecialtyById(specId);
 		vet.removeSpecialty(spec);
 		this.vets.save(vet);
-		return "redirect:/vets/" + vet.getId();
+		return null; // "redirect:/vets/" + vet.getId();
+	}
+
+	@PostMapping("/vets/{vetId}/available-day/{dayId}/delete")
+	public String processRemoveAvailableDayForm(@PathVariable("vetId") int vetId, @PathVariable("dayId") int dayId) {
+		Vet vet = this.vets.findById(vetId);
+		Day day = this.vets.findDayById(dayId);
+		vet.removeDays(day);
+		this.vets.save(vet);
+		return null; // "redirect:/vets/" + vet.getId();
 	}
 
 }

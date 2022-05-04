@@ -57,16 +57,18 @@
           </dl>
         </td>
         <td valign="top">
-          <table class="table-condensed">
+          <table class="table">
             <thead>
               <tr>
-                <th>Visit Date</th>
-                <th>Description</th>
+                <th scope="col">Visit Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Veterinarian</th>
               </tr>
             </thead>
             <tr th:each="visit : ${pet.visits}">
               <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
               <td th:text="${visit?.description}"></td>
+              <td th:text="${visit.vet.firstName}"></td>
               <td><a
                 th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}">Edit
                   Visit</a></td>

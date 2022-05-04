@@ -41,6 +41,10 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	@Transactional(readOnly = true)
 	Visit findById(@Param("id") Integer id);
 
+	@Query("SELECT availableDays FROM AvailableDays availableDays WHERE availableDays.name =:name")
+	@Transactional(readOnly = true)
+	AvailableDays findByDayName(@Param("name") String name);
+
 	void save(Visit visit);
 
 }
