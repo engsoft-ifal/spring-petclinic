@@ -28,6 +28,10 @@
         <th>Telephone 2</th>
         <td th:text="*{telephoneTwo}"></td>
       </tr>
+      <tr>
+        <th>E-mail</th>
+        <td th:text="*{email}"></td>
+      </tr>
     </table>
 
     <a th:href="@{{id}/edit(id=${owner.id})}" class="btn btn-primary"
@@ -68,10 +72,12 @@
             <tr th:each="visit : ${pet.visits}">
               <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
               <td th:text="${visit?.description}"></td>
-              <td th:text="${visit.vet.firstName}"></td>
-              <td><a
-                th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}">Edit
-                  Visit</a></td>
+              <td>
+                <a
+                  th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}"
+                  >Edit Visit</a
+                >
+              </td>
             </tr>
             <tr>
               <td>
