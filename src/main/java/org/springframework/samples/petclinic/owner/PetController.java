@@ -21,9 +21,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collection;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Juergen Hoeller
@@ -33,6 +40,8 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/owners/{ownerId}")
 class PetController {
+
+	private static String UPLOADED_FOLDER = "/tmp/";
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
@@ -71,11 +80,28 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
+	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model,
+			@RequestParam("file") MultipartFile file) {
+
+		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+
+		System.out.println(filename);
+
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
+
+		try {
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+			Files.write(path, bytes);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		owner.addPet(pet);
+
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
