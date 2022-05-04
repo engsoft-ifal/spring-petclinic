@@ -153,9 +153,8 @@ class VisitController {
 	}
 
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new/{availableDayId}/{selectedDate}")
-	public String processNewVisitFormPartTwo(@ModelAttribute("visitForm") String vetName,
-			@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit, @PathVariable String selectedDate,
-			BindingResult result) {
+	public String processNewVisitFormPartTwo(@ModelAttribute("visitForm") String vetName, @ModelAttribute Owner owner,
+			@PathVariable int petId, @Valid Visit visit, @PathVariable String selectedDate, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm2";
 		}
