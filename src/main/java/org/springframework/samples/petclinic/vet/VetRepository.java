@@ -79,6 +79,10 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	 * @param id the id to search for
 	 * @return the {@link Vet} if found
 	 */
+	@Query("SELECT vet FROM Vet vet WHERE vet.firstName =:firstName")
+	@Transactional(readOnly = true)
+	Vet findByName(@Param("firstName") String firstName);
+
 	@Query("SELECT vet FROM Vet vet WHERE vet.id =:id")
 	@Transactional(readOnly = true)
 	Vet findById(@Param("id") Integer id);

@@ -53,7 +53,12 @@ INSERT INTO visits VALUES (3, 8, '2013-01-03', 'neutered', 3);
 INSERT INTO visits VALUES (4, 7, '2013-01-04', 'spayed', 4);
 
 INSERT INTO available_days VALUES (1, 'Segunda-feira');
-INSERT INTO available_days VALUES (2, 'Terça-feira');
+INSERT INTO available_days VALUES (2, 'Terca-feira');
 INSERT INTO available_days VALUES (3, 'Quarta-feira');
 INSERT INTO available_days VALUES (4, 'Quinta-feira');
 INSERT INTO available_days VALUES (5, 'Sexta-feira');
+
+INSERT INTO vet_days VALUES (1, 1);
+INSERT INTO vet_days VALUES (2, 2);
+INSERT INTO vet_days VALUES (3, 3);
+INSERT INTO vet_days VALUES (4, 4);

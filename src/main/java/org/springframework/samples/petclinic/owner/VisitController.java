@@ -15,11 +15,25 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.vet.Day;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
+import org.springframework.scheduling.quartz.LocalDataSourceJobStore;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,9 +59,12 @@ class VisitController {
 
 	private final VisitRepository visits;
 
-	public VisitController(OwnerRepository _owners, VisitRepository _visits) {
+	private final VetRepository vets;
+
+	public VisitController(OwnerRepository _owners, VisitRepository _visits, VetRepository _vets) {
 		this.owners = _owners;
 		this.visits = _visits;
+		this.vets = _vets;
 	}
 
 	@InitBinder
@@ -81,21 +98,73 @@ class VisitController {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new/2")
-	public String secondStepNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-		return "pets/createOrUpdateVisitForm";
-	}
-
+	// @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new/2")
+	// public String secondStepNewVisitForm(@PathVariable("petId") int petId, Map<String,
+	// Object> model) {
+	// return "pets/createOrUpdateVisitForm";
+	// }
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result) {
+
+		Calendar cal = Calendar.getInstance();
+		Date date1 = Date.from(visit.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		cal.setTime(date1);
+		String[] daysOfWeek = { "Domingo", "Segunda-feira", "Terca-feira", "Quarta-feira", "Quinta-feira",
+				"Sexta-feira", "Sabado" };
+		String selectedDay = daysOfWeek[cal.get(Calendar.DAY_OF_WEEK) - 1];
+		AvailableDays availableDayId = visits.findByDayName(selectedDay);
+
+		return "redirect:/owners/" + owner.getId() + "/pets/" + petId + "/visits/new/" + availableDayId.getId() + "/"
+				+ visit.getDate().toString();
+
+		// if (result.hasErrors()) {
+		// return "pets/createOrUpdateVisitForm";
+		// }
+		// else {
+		// owner.addVisit(petId, visit);
+		// this.owners.save(owner);
+		// return "redirect:/owners/{ownerId}";
+		// }
+	}
+
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new/{availableDayId}/{selectedDate}")
+	private String getNewVisitFormPartTwo(Model model, @ModelAttribute Owner owner, @PathVariable int petId,
+			@PathVariable int availableDayId, @PathVariable String selectedDate) {
+		Collection<Vet> vets = this.vets.findAll();
+		Day day = this.vets.findDayById(availableDayId);
+		List<Vet> availableVets = new ArrayList<Vet>();
+
+		for (Vet vet : vets) {
+			List<Day> vetDays = vet.getDays();
+			for (Day dayVet : vetDays) {
+				if (dayVet.getName().equals(day.getName())) {
+					availableVets.add(vet);
+					break;
+				}
+			}
+		}
+
+		model.addAttribute("availableVets", availableVets);
+		return "pets/createOrUpdateVisitForm2";
+	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new/{availableDayId}/{selectedDate}")
+	public String processNewVisitFormPartTwo(@ModelAttribute("visitForm") String vetName,
+			@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit, @PathVariable String selectedDate,
+			BindingResult result) {
 		if (result.hasErrors()) {
-			return "pets/createOrUpdateVisitForm";
+			return "pets/createOrUpdateVisitForm2";
 		}
 		else {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate convertedSelectDate = LocalDate.parse(selectedDate, formatter);
+			visit.setDate(convertedSelectDate);
+			Vet vet = vets.findByName(vetName);
+			visit.setVet(vet);
 			owner.addVisit(petId, visit);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";

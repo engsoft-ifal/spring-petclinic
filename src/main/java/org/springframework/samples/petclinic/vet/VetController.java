@@ -150,7 +150,7 @@ class VetController {
 	}
 
 	@PostMapping(path = "/vets/{vetId}/available-day/new")
-	private String submitDay(@ModelAttribute("DarForm") DayForm dayForm, Model model,
+	private String submitDay(@ModelAttribute("DayForm") DayForm dayForm, Model model,
 			@PathVariable("vetId") int vetId) {
 		Vet vet = this.vets.findById(vetId);
 		Day day = this.vets.findDayByName(dayForm.getDay());
