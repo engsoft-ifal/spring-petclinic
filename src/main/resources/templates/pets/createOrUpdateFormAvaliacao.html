@@ -1,0 +1,38 @@
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+    <h2>
+        Avaliação
+    </h2>
+
+    <b>Visita</b>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Data da visita</th>
+                <th>Descrição da visita</th>
+            </tr>
+        </thead>
+        <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
+            <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
+            <td th:text="${visit.description}"></td>
+        </tr>
+    </table>
+
+    <form th:object="${visit}" class="form-horizontal" method="post">
+        <div class="form-group has-feedback">
+            <input th:replace="~{fragments/inputField :: input ('Descrição da avaliação', 'description', 'text')}" />
+            <label class="col-sm-2 control-label"></label>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" type="submit">Add Visit</button>
+            </div>
+        </div>
+    </form>
+
+</body>
+
+</html>
