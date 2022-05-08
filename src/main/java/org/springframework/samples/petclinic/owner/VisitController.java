@@ -110,4 +110,19 @@ class VisitController {
 		return mav;
 	}
 
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visit/{visitId}/avaliacao/new")
+	public String initNovoFormAvaliacao(@PathVariable("visitId") int visitId, Map<String, Object> model) {
+		return "pets/createOrUpdateFormAvaliacao";
+	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visit/{visitId}/avaliacao/new")
+	public String processNovoFormAvaliacao(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "pets/createOrUpdateVisitForm";
+		}
+		else {
+			return "redirect:/owners/{ownerId}";
+		}
+	}
 }
