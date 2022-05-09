@@ -15,7 +15,10 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import java.io.File;
+
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
@@ -35,6 +38,10 @@ public class Person extends BaseEntity {
 	@NotEmpty
 	private String lastName;
 
+	@Lob
+	@Column(name = "avatar", length = Integer.MAX_VALUE, nullable = true)
+	private byte[] avatar;
+
 	public String getFirstName() {
 		return this.firstName;
 	}
@@ -49,6 +56,14 @@ public class Person extends BaseEntity {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public byte[] getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
 	}
 
 }

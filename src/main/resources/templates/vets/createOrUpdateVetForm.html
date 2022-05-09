@@ -4,8 +4,9 @@
 <body>
 
   <h2>Vet</h2>
-  <form th:object="${vet}" class="form-horizontal" id="add-vet-form" method="post">
+  <form th:object="${vet}" class="form-horizontal" id="add-vet-form" method="post" enctype="multipart/form-data">
     <div class="form-group has-feedback">
+      <input type="file" name="avatar" accept="image/png, image/jpeg, image/jpg" />
       <input
         th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
       <input
