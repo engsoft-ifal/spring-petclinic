@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Juergen Hoeller
@@ -74,14 +78,18 @@ class VetController {
 	}
 
 	@PostMapping("/vets/new")
-	public String processCreationForm(@Valid Vet vet, BindingResult result) {
-		if (result.hasErrors()) {
+	public String processCreationForm(@Valid Vet vet, BindingResult result,
+			@RequestParam("avatar") MultipartFile file) {
+		try {
+			byte[] avatarImage = file.getBytes();
+			vet.setAvatar(avatarImage);
+		}
+		catch (Exception e) {
 			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
 		}
-		else {
-			this.vets.save(vet);
-			return "redirect:/vets/" + vet.getId();
-		}
+
+		this.vets.save(vet);
+		return "redirect:/vets/" + vet.getId();
 	}
 
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
