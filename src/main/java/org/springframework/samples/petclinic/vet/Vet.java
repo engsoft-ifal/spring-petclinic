@@ -28,6 +28,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import java.io.File;
+
+import javax.persistence.Column;
+import javax.persistence.Lob;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -54,6 +58,10 @@ public class Vet extends Person {
 	@JoinTable(name = "vet_days", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "day_id"))
 	private Set<Day> days;
+
+	@Lob
+	@Column(name = "avatar", length = Integer.MAX_VALUE, nullable = true)
+	private byte[] avatar;
 
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
@@ -114,6 +122,14 @@ public class Vet extends Person {
 
 	public void removeDays(Day day) {
 		this.days.removeIf(d -> d.getId().equals(day.getId()));
+	}
+
+	public byte[] getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
 	}
 
 }
