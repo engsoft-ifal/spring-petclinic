@@ -57,6 +57,13 @@
           </dl>
         </td>
         <td valign="top">
+          <img
+            src="@{'../static/resources/images/pet_photos/' + pet.photo}"
+            th:src="@{${pet.photosImagePath}}"
+            style="height: 150px; width: 100%"
+          />
+        </td>
+        <td valign="top">
           <table class="table-condensed">
             <thead>
               <tr>
@@ -67,9 +74,12 @@
             <tr th:each="visit : ${pet.visits}">
               <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
               <td th:text="${visit?.description}"></td>
-              <td><a
-                th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}">Edit
-                  Visit</a></td>
+              <td>
+                <a
+                  th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}"
+                  >Edit Visit</a
+                >
+              </td>
             </tr>
             <tr>
               <td>

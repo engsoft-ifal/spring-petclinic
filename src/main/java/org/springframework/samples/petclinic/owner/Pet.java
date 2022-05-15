@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -57,6 +58,9 @@ public class Pet extends NamedEntity {
 	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
 
+	@Column(nullable = true, length = 64)
+	private String photo;
+
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
@@ -79,6 +83,22 @@ public class Pet extends NamedEntity {
 
 	public void addVisit(Visit visit) {
 		getVisits().add(visit);
+	}
+
+	public String getPhoto() {
+		return this.photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	@Transient
+	public String getPhotosImagePath() {
+		if (this.photo == null)
+			return null;
+
+		return "/resources/images/pet_photos/" + this.getPhoto();
 	}
 
 }

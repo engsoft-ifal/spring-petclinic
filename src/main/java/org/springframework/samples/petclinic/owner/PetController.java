@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.system.FileUploadUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -83,22 +84,15 @@ class PetController {
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model,
 			@RequestParam("file") MultipartFile file) {
 
-		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename()).replace(" ", "_").toLowerCase();
 
-		System.out.println(filename);
+		System.out.println(fileName);
 
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
 
-		try {
-			byte[] bytes = file.getBytes();
-			Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-			Files.write(path, bytes);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		pet.setPhoto(fileName);
 
 		owner.addPet(pet);
 
@@ -108,6 +102,10 @@ class PetController {
 		}
 		else {
 			this.owners.save(owner);
+
+			String uploadDir = "src/main/resources/static/resources/images/pet_photos";
+
+			FileUploadUtil.saveFile(uploadDir, fileName, file);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
