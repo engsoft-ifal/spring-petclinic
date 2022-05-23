@@ -74,7 +74,7 @@
               <td th:text="${visit?.description}"></td>
               <td>
                 <a
-                  th:href="@{{ownerId}/pets/{petId}/visits/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}"
+                  th:href="@{{ownerId}/pets/{petId}/visits/{visitId}/edit(ownerId=${owner.id},petId=${pet.id}, visitId=${visit.id})}"
                   >Edit Visit</a
                 >
               </td>

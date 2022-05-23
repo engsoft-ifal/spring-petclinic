@@ -57,6 +57,8 @@ INSERT INTO available_days VALUES (2, 'Terca-feira');
 INSERT INTO available_days VALUES (3, 'Quarta-feira');
 INSERT INTO available_days VALUES (4, 'Quinta-feira');
 INSERT INTO available_days VALUES (5, 'Sexta-feira');
+INSERT INTO available_days VALUES (6, 'Sabado');
+INSERT INTO available_days VALUES (7, 'Domingo');
 
 INSERT INTO vet_days VALUES (1, 1);
 INSERT INTO vet_days VALUES (2, 2);

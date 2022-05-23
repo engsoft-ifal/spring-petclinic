@@ -4,8 +4,7 @@
 <body>
 
   <h2>
-    <th:block th:if="${visit['new']}">New </th:block>
-    <th:block th:if="${!visit['new']}">Edit </th:block>
+    <th:block th:text="${visit['new']} ? 'New' : 'Edit'"></th:block>
     Visit
   </h2>
 
