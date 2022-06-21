@@ -28,6 +28,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import java.io.File;
+
+import javax.persistence.Column;
+import javax.persistence.Lob;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -49,6 +53,15 @@ public class Vet extends Person {
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "vet_days", joinColumns = @JoinColumn(name = "vet_id"),
+			inverseJoinColumns = @JoinColumn(name = "day_id"))
+	private Set<Day> days;
+
+	@Lob
+	@Column(name = "avatar", length = Integer.MAX_VALUE, nullable = true)
+	private byte[] avatar;
 
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
@@ -74,6 +87,49 @@ public class Vet extends Person {
 
 	public void addSpecialty(Specialty specialty) {
 		getSpecialtiesInternal().add(specialty);
+	}
+
+	public void removeSpecialty(Specialty specialty) {
+		this.specialties.removeIf(spec -> spec.getId().equals(specialty.getId()));
+	}
+
+	// new
+	protected Set<Day> getDaysInternal() {
+		if (this.days == null) {
+			this.days = new HashSet<>();
+		}
+		return this.days;
+	}
+
+	protected void setDaysInternal(Set<Day> days) {
+		this.days = days;
+	}
+
+	@XmlElement
+	public List<Day> getDays() {
+		List<Day> sortedDays = new ArrayList<>(getDaysInternal());
+		PropertyComparator.sort(sortedDays, new MutableSortDefinition("name", true, true));
+		return Collections.unmodifiableList(sortedDays);
+	}
+
+	public int getNrOfDays() {
+		return getDaysInternal().size();
+	}
+
+	public void addDays(Day days) {
+		getDaysInternal().add(days);
+	}
+
+	public void removeDays(Day day) {
+		this.days.removeIf(d -> d.getId().equals(day.getId()));
+	}
+
+	public byte[] getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
 	}
 
 }

@@ -11,41 +11,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- @import "bootstrap";
+@import "bootstrap";
 
-$icon-font-path:    "../../webjars/bootstrap/fonts/";
+$icon-font-path: "../../webjars/bootstrap/fonts/";
 
-$spring-green:      #6db33f;
+$spring-green: #6db33f;
 $spring-dark-green: #5fa134;
-$spring-brown:      #34302D;
-$spring-grey:       #838789;
+$spring-brown: #34302d;
+$spring-grey: #838789;
 $spring-light-grey: #f1f1f1;
 
-$body-bg:                           $spring-light-grey;
-$text-color:                        $spring-brown;
-$link-color:                        $spring-dark-green;
-$link-hover-color:                  $spring-dark-green;
+$body-bg: $spring-light-grey;
+$text-color: $spring-brown;
+$link-color: $spring-dark-green;
+$link-hover-color: $spring-dark-green;
 
-$navbar-default-link-color:         $spring-light-grey;
-$navbar-default-link-active-color:  $spring-light-grey;
-$navbar-default-link-hover-color:   $spring-light-grey;
-$navbar-default-link-hover-bg:      $spring-green;
+$navbar-default-link-color: $spring-light-grey;
+$navbar-default-link-active-color: $spring-light-grey;
+$navbar-default-link-hover-color: $spring-light-grey;
+$navbar-default-link-hover-bg: $spring-green;
 $navbar-default-toggle-icon-bar-bg: $spring-light-grey;
-$navbar-default-toggle-hover-bg:    transparent;
-$navbar-default-link-active-bg:     $spring-green;
+$navbar-default-toggle-hover-bg: transparent;
+$navbar-default-link-active-bg: $spring-green;
 
-$border-radius-base:             0;
-$border-radius-large:            0;
-$border-radius-small:            0;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
 
-$nav-tabs-active-link-hover-color:        $spring-light-grey;
-$nav-tabs-active-link-hover-bg:           $spring-brown;
+$nav-tabs-active-link-hover-color: $spring-light-grey;
+$nav-tabs-active-link-hover-bg: $spring-brown;
 $nav-tabs-active-link-hover-border-color: $spring-brown;
-$nav-tabs-border-color:                   $spring-brown;
+$nav-tabs-border-color: $spring-brown;
 
-$pagination-active-bg:                    $spring-brown;
-$pagination-active-border:                $spring-green;
-$table-border-color:                      $spring-brown;
+$pagination-active-bg: $spring-brown;
+$pagination-active-border: $spring-green;
+$table-border-color: $spring-brown;
 
 .table > thead > tr > th {
   background-color: lighten($spring-brown, 3%);
@@ -83,7 +83,6 @@ $table-border-color:                      $spring-brown;
   }
 }
 
-
 .container .text-muted {
   margin: 20px 0;
 }
@@ -100,7 +99,7 @@ code {
 }
 
 h1 {
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .index-page--subtitle {
@@ -115,8 +114,8 @@ h1 {
 
 #job-params-modal .modal-dialog {
   width: 90%;
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 [ng-cloak].splash {
@@ -167,7 +166,8 @@ table td.action-column {
   vertical-align: top;
 }
 
-.cluster-view .label, .cluster-view .column-block {
+.cluster-view .label,
+.cluster-view .column-block {
   display: block;
 }
 

@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.owner;
 
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataAccessException;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-
 /**
- * Repository class for <code>Vet</code> domain objects All method names are compliant
+ * Repository class for <code>Owner</code> domain objects All method names are compliant
  * with Spring Data naming conventions so this interface can easily be extended for Spring
  * Data. See:
  * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
@@ -36,26 +35,16 @@ import java.util.Collection;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends CrudRepository<Vet, Integer> {
+public interface VisitRepository extends Repository<Visit, Integer> {
 
-	/**
-	 * Retrieve all <code>Vet</code>s from the data store.
-	 * @return a <code>Collection</code> of <code>Vet</code>s
-	 */
+	@Query("SELECT visit FROM Visit visit WHERE visit.id =:id")
 	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Collection<Vet> findAll() throws DataAccessException;
+	Visit findById(@Param("id") Integer id);
 
-	/**
-	 * Retrieve all <code>Vet</code>s from data store in Pages
-	 * @param pageable
-	 * @return
-	 * @throws DataAccessException
-	 */
+	@Query("SELECT availableDays FROM AvailableDays availableDays WHERE availableDays.name =:name")
 	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
+	AvailableDays findByDayName(@Param("name") String name);
 
-	;
+	void save(Visit visit);
 
 }

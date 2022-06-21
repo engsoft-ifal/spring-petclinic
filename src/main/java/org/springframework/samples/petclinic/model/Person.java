@@ -15,7 +15,10 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import java.io.File;
+
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 

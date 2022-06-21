@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+
+  <body>
+  
+  
+    <h2>Vet Information</h2>
+  
+  
+    <table class="table table-striped" th:object="${vet}">
+      <tr>
+        <th>Name</th>
+        <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+      </tr>
+    </table>
+  
+    <a th:href="@{{id}/edit(id=${vet.id})}" class="btn btn-primary">Edit</a>
+    <a th:href="@{{id}/specialty/new(id=${vet.id})}" class="btn btn-primary">Add New Specialty</a>
+    <a th:href="@{{id}/available-day/new(id=${vet.id})}" class="btn btn-primary">Add New Available Appointment Day</a>
+  
+    <br />
+    <br />
+    <br />
+    <h2>Specialties</h2>
+  
+    <table class="table table-striped">
+  
+      <tr th:each="specialty : ${vet.specialties}">
+        <td valign="top">
+          <dl style="margin: 5px 5px;" class="dl-horizontal">
+            <!-- <dt>Name</dt> -->
+            <div class="row">
+              <div class="col-md-6" style="display:flex; align-items:center;">
+                <dd style="margin: 0" th:text="${specialty.name}"></dd>
+              </div>
+              <div class="col-md-6" style="display:flex; flex-direction: row-reverse;">
+                <form>
+                  <button th:onclick="|removeSpec(${vet.id}, ${specialty.id})|" th:id="${'spec-' + specialty.id}" style="margin-right: 15px;">remover</button>
+                </form>
+              </div>
+            </div>
+          </dl>
+      </tr>
+  
+    </table>
+
+    <br />
+    <br />
+    <br />
+    <h2>Available Days</h2>
+
+    <table class="table table-striped">
+  
+      <tr th:each="day : ${vet.days}">
+        <td valign="top">
+          <dl style="margin: 5px 5px;" class="dl-horizontal">
+            <!-- <dt>Name</dt> -->
+            <div class="row">
+              <div class="col-md-6" style="display:flex; align-items:center;">
+                <dd style="margin: 0" th:text="${day.name}"></dd>
+              </div>
+              <div class="col-md-6" style="display:flex; flex-direction: row-reverse;">
+                <form>
+                  <button th:onclick="|removeDay(${vet.id}, ${day.id})|" th:id="${'day-' + day.id}" style="margin-right: 15px;">remover</button>
+                </form>
+              </div>
+            </div>
+          </dl>
+      </tr>
+  
+    </table>
+  <script>
+    function removeSpec(vetId, specId){
+      if(confirm(`Deseja mesmo remover essa especialidade?`)){
+        const url = `/vets/${vetId}/specialty/${specId}/delete`
+        fetch(url, {method: "POST"})
+        .then(()=>location.reload())
+      }
+    }
+
+    function removeDay(vetId, dayId){
+      if(confirm(`Deseja mesmo remover essa dia?`)){
+        const url = `/vets/${vetId}/available-day/${dayId}/delete`
+        fetch(url, {method: "POST"})
+        .then(() => location.reload())
+      }
+    }
+  </script>
+
+  </body>
+
+</html>
