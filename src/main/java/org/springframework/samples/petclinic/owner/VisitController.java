@@ -170,19 +170,68 @@ class VisitController {
 		}
 	}
 
-	@PutMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit")
-	public String editVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
-			BindingResult result) {
-		return "Put request para" + petId;
-	}
-
-	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/edit")
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit")
 	public ModelAndView initEditVisitForm(@PathVariable("visitId") int visitId) {
 		ModelAndView mav = new ModelAndView("pets/createOrUpdateVisitForm");
 		Visit visit = this.visits.findById(visitId);
 		mav.addObject(visit);
-
 		return mav;
+	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit")
+	public String editVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @PathVariable int visitId,
+			@Valid Visit visit, BindingResult result) {
+		Calendar cal = Calendar.getInstance();
+		Date date1 = Date.from(visit.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		cal.setTime(date1);
+		String[] daysOfWeek = { "Domingo", "Segunda-feira", "Terca-feira", "Quarta-feira", "Quinta-feira",
+				"Sexta-feira", "Sabado" };
+		String selectedDay = daysOfWeek[cal.get(Calendar.DAY_OF_WEEK) - 1];
+		AvailableDays availableDayId = visits.findByDayName(selectedDay);
+
+		return "redirect:/owners/" + owner.getId() + "/pets/" + petId + "/visits/" + visitId + "/edit/"
+				+ availableDayId.getId() + "/" + visit.getDate().toString();
+	}
+
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit/{availableDayId}/{selectedDate}")
+	private String getEditVisitFormPartTwo(Model model, @ModelAttribute Owner owner, @PathVariable int petId,
+			@PathVariable int visitId, @PathVariable int availableDayId, @PathVariable String selectedDate) {
+		Visit visit = this.visits.findById(visitId);
+
+		Collection<Vet> vets = this.vets.findAll();
+		Day day = this.vets.findDayById(availableDayId);
+		List<Vet> availableVets = new ArrayList<Vet>();
+
+		for (Vet vet : vets) {
+			List<Day> vetDays = vet.getDays();
+			for (Day dayVet : vetDays) {
+				if (dayVet.getName().equals(day.getName())) {
+					availableVets.add(vet);
+					break;
+				}
+			}
+		}
+
+		model.addAttribute("visit", visit);
+		model.addAttribute("availableVets", availableVets);
+		return "pets/createOrUpdateVisitForm2";
+	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit/{availableDayId}/{selectedDate}")
+	public String editVisitFormPartTwo(@ModelAttribute("visitForm") String vetName, @ModelAttribute Owner owner,
+			@PathVariable int petId, @Valid Visit visit, @PathVariable int visitId, @PathVariable String selectedDate,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "pets/createOrUpdateVisitForm2";
+		}
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate convertedSelectDate = LocalDate.parse(selectedDate, formatter);
+		visit.setDate(convertedSelectDate);
+		visit.setId(visitId);
+
+		this.visits.save(visit);
+		return "redirect:/owners/{ownerId}";
 	}
 
 }

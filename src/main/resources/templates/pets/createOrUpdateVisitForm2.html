@@ -3,12 +3,10 @@
 
 <body>
 
-  <h2>
-    <th:block th:if="${visit['new']}">New </th:block>
-    <th:block th:if="${!visit['new']}">Edit </th:block>
+  <h2 th:object="${visit}">
+    <th:block th:text="${visit['id']} ? 'Edit' : 'New'"></th:block>
     Visit
   </h2>
-
   <b>Pet</b>
   <table class="table table-striped">
     <thead>
@@ -43,23 +41,23 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <input type="hidden" name="petId" th:value="${pet.id}" />
-        <button class="btn btn-primary" type="submit">Add Visit</button>
+        <button class="btn btn-primary" type="submit" th:text="${visit['id']} ? 'Edit Visit' : 'Add Visit'"></button>
       </div>
     </div>
   </form>
 
   <br />
-  <b>Previous Visits</b>
-  <table class="table table-striped">
-    <tr>
-      <th>Date</th>
-      <th>Description</th>
-    </tr>
-    <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
-      <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
-      <td th:text=" ${visit.description}"></td>
-    </tr>
-  </table>
+    <b th:style="${visit['description']} ? 'display: none' : 'display: block'">Previous Visits</b>
+    <table class="table table-striped" >
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+      </tr>
+      <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
+        <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
+        <td th:text=" ${visit.description}"></td>
+      </tr>
+    </table>
 
 </body>
 </html>
